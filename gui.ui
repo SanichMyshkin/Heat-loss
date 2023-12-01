@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1021</width>
+    <height>805</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="CentralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>995</width>
+         <height>734</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="Materials">
+           <attribute name="title">
+            <string>Материалы</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0" colspan="2">
+             <widget class="QTableWidget" name="MaterialsTableWidget">
+              <row>
+               <property name="text">
+                <string>1</string>
+               </property>
+              </row>
+              <column>
+               <property name="text">
+                <string>Наименование</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>λ</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="AddRowMaterialsPushButton">
+              <property name="text">
+               <string>Добавить строку</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="RemoveRowMaterialsPushButton">
+              <property name="text">
+               <string>Удалить строку</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="Rooms">
+           <attribute name="title">
+            <string>Помещения</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="RemoveRowRoomsPushButton">
+              <property name="text">
+               <string>Удалить строку</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="AddRowRoomsPushButton">
+              <property name="text">
+               <string>Добавить строку</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QTableWidget" name="RoomsTableWidget">
+              <row>
+               <property name="text">
+                <string>1</string>
+               </property>
+              </row>
+              <column>
+               <property name="text">
+                <string>Наименование</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>t, ˚с</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="Walls">
+           <attribute name="title">
+            <string>Стены</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QPushButton" name="GetMaterialsPushButton">
+              <property name="text">
+               <string>Получить материалы</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="WallsTableWidget">
+              <row>
+               <property name="text">
+                <string>1</string>
+               </property>
+              </row>
+              <column>
+               <property name="text">
+                <string>Наименование</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Слой №1</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Слой №2</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Слой №3</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Слой №4</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Слой №5</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>λ</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>δ,м</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>δ/λ</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>R</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="CalculateWallsPushButton">
+              <property name="text">
+               <string>Рассчитать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPushButton" name="AddRowWallsPushButton">
+                <property name="text">
+                 <string>Добавить строку</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RemoveRowWallsPushButton">
+                <property name="text">
+                 <string>Удалить строку</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="Calculate">
+           <attribute name="title">
+            <string>Расчет</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="2" column="0">
+             <widget class="QPushButton" name="ShowCalculatePushButton">
+              <property name="text">
+               <string>Рассчитать</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QTableWidget" name="CalculateTableWidget">
+              <row>
+               <property name="text">
+                <string>1</string>
+               </property>
+              </row>
+              <column>
+               <property name="text">
+                <string>Помещение №1</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Помещение №2</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>t1, °С</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>t2, °С</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Стена</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Высота стены</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Ширина стены</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Площадь стены</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>К, Вт/(м2 ˚С)</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Теплопотери</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QPushButton" name="AddRowCalculatePushButton">
+                <property name="text">
+                 <string>Добавить связку</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RemoveRowCalculatePushButton">
+                <property name="text">
+                 <string>Удалить связку</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="GetRoomsPushButton">
+              <property name="text">
+               <string>Получить помещения</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1021</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="open_file"/>
+    <addaction name="save_file"/>
+    <addaction name="close_file"/>
+   </widget>
+   <widget class="QMenu" name="about">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="clean">
+    <property name="title">
+     <string>Очистить</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="create">
+    <property name="title">
+     <string>Создать</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="create"/>
+   <addaction name="clean"/>
+   <addaction name="about"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="open_file">
+   <property name="text">
+    <string>Открыть</string>
+   </property>
+  </action>
+  <action name="save_file">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="close_file">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Закрыть</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
