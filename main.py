@@ -25,6 +25,18 @@ class GUI(QMainWindow, MaterialsTable,
         self.rooms()
         self.walls()
 
+        self.ClearMaterials.triggered.connect(self.ClearTableMaterials)
+        self.ClearWalls.triggered.connect(self.ClearTableWalls)
+        self.ClearRooms.triggered.connect(self.ClearTableRooms)
+        self.ClearCalculate.triggered.connect(self.ClearTableCalculate)
+        self.ClearAll.triggered.connect(self.ClearAllTable)
+
+    def ClearAllTable(self):
+        self.ClearTableMaterials()
+        self.ClearTableWalls()
+        self.ClearTableRooms()
+        self.ClearTableCalculate()
+
     def set_autosize_table(self):
         '''Расстягивание ширины заголовков таблиц под ширину экрана'''
         self.MaterialsTableWidget.horizontalHeader().setSectionResizeMode(

@@ -340,11 +340,19 @@
     <property name="title">
      <string>Справка</string>
     </property>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
    </widget>
-   <widget class="QMenu" name="clean">
+   <widget class="QMenu" name="clear">
     <property name="title">
      <string>Очистить</string>
     </property>
+    <addaction name="ClearMaterials"/>
+    <addaction name="ClearRooms"/>
+    <addaction name="ClearWalls"/>
+    <addaction name="ClearCalculate"/>
+    <addaction name="separator"/>
+    <addaction name="ClearAll"/>
    </widget>
    <widget class="QMenu" name="create">
     <property name="title">
@@ -353,7 +361,7 @@
    </widget>
    <addaction name="menu"/>
    <addaction name="create"/>
-   <addaction name="clean"/>
+   <addaction name="clear"/>
    <addaction name="about"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -376,6 +384,41 @@
    </property>
    <property name="text">
     <string>Закрыть</string>
+   </property>
+  </action>
+  <action name="ClearMaterials">
+   <property name="text">
+    <string>Очистить Материалы</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Руководство</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Создатель</string>
+   </property>
+  </action>
+  <action name="ClearRooms">
+   <property name="text">
+    <string>Очистить Помещения</string>
+   </property>
+  </action>
+  <action name="ClearWalls">
+   <property name="text">
+    <string>Очистить Стены</string>
+   </property>
+  </action>
+  <action name="ClearCalculate">
+   <property name="text">
+    <string>Очистить Вычисления</string>
+   </property>
+  </action>
+  <action name="ClearAll">
+   <property name="text">
+    <string>Очистить ВСЕ</string>
    </property>
   </action>
  </widget>

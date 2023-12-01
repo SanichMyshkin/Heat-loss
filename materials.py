@@ -20,4 +20,6 @@ class MaterialsTable:
         coeff_thermal_conductivity.setMaximum(self.MAX_RANGE)
         self.MaterialsTableWidget.setCellWidget(current_row, column_number, coeff_thermal_conductivity)
 
-
+    def ClearTableMaterials(self):
+        self.MaterialsTableWidget.setRowCount(0)
+        self.AddMaterialsRow()

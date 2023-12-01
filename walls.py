@@ -7,10 +7,8 @@ class WallsTable:
     def __init__(self):
         self.list_materials = []
         self.list_material_position = []
-        # self.WallsTableWidget = None
 
     def GetMaterials(self):  # UPDATE BUTTON
-        # self.SavePositionMaterials()
         self.Get_and_update_materials()
         self.WallLayerComboBox()
         self.update_combo_box()
@@ -18,8 +16,6 @@ class WallsTable:
     def AddWallsRow(self):
         self.WallsTableWidget.insertRow(self.WallsTableWidget.rowCount())
         self.WallLayerComboBox()
-        # self.SavePositionMaterials()
-        # self.return_position()
         self.MakeWallsCellReadOnly()
 
     def RemoveWallsRow(self):
@@ -141,3 +137,7 @@ class WallsTable:
             row_data = [self.WallsTableWidget.cellWidget(
                 row, col).currentText() for col in number_column]
             self.list_material_position.append(row_data)
+
+    def ClearTableWalls(self):
+        self.WallsTableWidget.setRowCount(0)
+        self.AddWallsRow()

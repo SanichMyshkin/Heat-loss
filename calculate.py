@@ -94,3 +94,7 @@ class CalculateTable():
         for rooms_and_temp in data:
             result.append(rooms_and_temp['rooms_name'])
         return result
+
+    def ClearTableCalculate(self):
+        self.CalculateTableWidget.setRowCount(0)
+        self.AddCalculateRow()

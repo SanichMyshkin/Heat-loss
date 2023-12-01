@@ -18,3 +18,7 @@ class RoomsTable():
         coeff_thermal_conductivity = QDoubleSpinBox()  # noqa F405
         coeff_thermal_conductivity.setMaximum(self.MAX_RANGE)
         self.RoomsTableWidget.setCellWidget(current_row, column_number, coeff_thermal_conductivity)  # noqa E501
+
+    def ClearTableRooms(self):
+        self.RoomsTableWidget.setRowCount(0)
+        self.AddRoomsRow()
