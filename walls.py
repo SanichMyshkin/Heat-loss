@@ -8,10 +8,10 @@ class WallsTable:
         self.list_materials = []
         self.list_material_position = []
 
-    def GetMaterials(self):  # UPDATE BUTTON
-        self.Get_and_update_materials()
+    def GetMaterials(self):
+        self.GetAndUpdateMaterials()
         self.WallLayerComboBox()
-        self.update_combo_box()
+        self.UpdateComboBox()
 
     def AddWallsRow(self):
         self.WallsTableWidget.insertRow(self.WallsTableWidget.rowCount())
@@ -52,28 +52,22 @@ class WallsTable:
                     if new_item not in existing_items:
                         combo_box.addItem(new_item)
 
-    def update_combo_box(self):
+    def UpdateComboBox(self):
         column_number = [1, 2, 3, 4, 5]
         self.SavePositionMaterials()
 
         for row in range(self.WallsTableWidget.rowCount()):
             for col in column_number:
                 combo_box = self.WallsTableWidget.cellWidget(row, col)
-
-                # Удаляем все элементы из комбобокса
                 combo_box.clear()
-
-                # Добавляем новые значения, не удаляя старые
                 combo_box.addItems(self.parse_materials(self.list_materials))
-
-                # Выбираем текущее значение, если оно существует в сохраненной позиции
                 if row < len(self.list_material_position) and col - 1 < len(self.list_material_position[row]):
                     current_text = self.list_material_position[row][col - 1]
                     index = combo_box.findText(current_text)
                     if index != -1:
                         combo_box.setCurrentIndex(index)
 
-    def Get_and_update_materials(self):
+    def GetAndUpdateMaterials(self):
         table_contents = []
         count_temp = 0
         count_name = 0

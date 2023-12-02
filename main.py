@@ -16,15 +16,23 @@ class GUI(QMainWindow, MaterialsTable,
     def __init__(self):
         super(GUI, self).__init__()
         uic.loadUi(ui_path, self)
+
+        # Списки для передачи и хранения материалов
         self.list_materials = []
-        self.list_rooms = []
         self.list_material_position = []
+
+        # Списки для для передачи и обновления помещений
+        self.list_rooms = []
+        self.list_rooms_position = []
+
+        # Инициализация методов для каждой таблицы
         self.set_autosize_table()
         self.materials()
         self.calculate()
         self.rooms()
         self.walls()
 
+        # Иницализация методов для очистки данных
         self.ClearMaterials.triggered.connect(self.ClearTableMaterials)
         self.ClearWalls.triggered.connect(self.ClearTableWalls)
         self.ClearRooms.triggered.connect(self.ClearTableRooms)
@@ -32,6 +40,7 @@ class GUI(QMainWindow, MaterialsTable,
         self.ClearAll.triggered.connect(self.ClearAllTable)
 
     def ClearAllTable(self):
+        '''Метод очищения всех таблиц'''
         self.ClearTableMaterials()
         self.ClearTableWalls()
         self.ClearTableRooms()
@@ -51,16 +60,6 @@ class GUI(QMainWindow, MaterialsTable,
         self.CalculateTableWidget.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch)
 
-    def calculate(self):
-        '''Методы для таблицы расчеты'''
-        self.AddRowCalculatePushButton.clicked.connect(self.AddCalculateRow)
-        self.RemoveRowCalculatePushButton.clicked.connect(self.RemoveCalculateRow)  # noqa E501
-        self.GetRoomsPushButton.clicked.connect(self.GetRooms)
-        self.CalculateCountSpinBox()
-        self.CalculateWallComboBox()
-        self.CalculateComboBox()
-        self.MakeCalculateCellReadOnly()
-
     def materials(self):
         '''Методы для таблицы материалов'''
         self.AddRowMaterialsPushButton.clicked.connect(self.AddMaterialsRow)
@@ -73,11 +72,24 @@ class GUI(QMainWindow, MaterialsTable,
         self.RemoveRowRoomsPushButton.clicked.connect(self.RemoveRoomsRow)  # noqa E501
         self.RoomsCountSpinBox()
 
+    def calculate(self):
+        '''Методы для таблицы расчеты'''
+        self.AddRowCalculatePushButton.clicked.connect(self.AddCalculateRow)
+        self.RemoveRowCalculatePushButton.clicked.connect(self.RemoveCalculateRow)  # noqa E501
+        self.GetRoomsPushButton.clicked.connect(self.GetRooms)
+
+        self.CalculateCountSpinBox()
+        self.CalculateWallComboBox()
+
+        self.CalculateRoomsComboBox()
+        self.MakeCalculateCellReadOnly()
+
     def walls(self):
         '''Методы для таблицы стен'''
         self.AddRowWallsPushButton.clicked.connect(self.AddWallsRow)
         self.RemoveRowWallsPushButton.clicked.connect(self.RemoveWallsRow)
         self.GetMaterialsPushButton.clicked.connect(self.GetMaterials)
+
         self.WallLayerComboBox()
         self.MakeWallsCellReadOnly()
 

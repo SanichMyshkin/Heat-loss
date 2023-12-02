@@ -7,42 +7,38 @@ class CalculateTable():
 
     def __init__(self):
         self.list_rooms = []
+        self.list_rooms_position = []
 
     def GetRooms(self):
-        self.Get_and_update_rooms()
-        self.CalculateComboBox()
+        self.GetAndUpdateRooms()
+        self.CalculateRoomsComboBox()
+        self.UpdateComboBox()
 
     def AddCalculateRow(self):
-        self.CalculateTableWidget.insertRow(self.CalculateTableWidget.rowCount())  # noqa E501
+        self.CalculateTableWidget.insertRow(
+            self.CalculateTableWidget.rowCount())
         self.CalculateCountSpinBox()
-        self.CalculateComboBox()
+        self.CalculateRoomsComboBox()
         self.CalculateWallComboBox()
         self.MakeCalculateCellReadOnly()
 
     def RemoveCalculateRow(self):
-        self.CalculateTableWidget.removeRow(self.CalculateTableWidget.rowCount() - 1)  # noqa E501
+        self.CalculateTableWidget.removeRow(
+            self.CalculateTableWidget.rowCount() - 1)
 
     def CalculateCountSpinBox(self):
         column_number = [5, 6]
         current_row = self.CalculateTableWidget.rowCount() - 1
         for number in column_number:
-            coeff_thermal_conductivity = QDoubleSpinBox()  # noqa F405
+            coeff_thermal_conductivity = QDoubleSpinBox()
             coeff_thermal_conductivity.setMaximum(self.MAX_RANGE)
-            self.CalculateTableWidget.setCellWidget(current_row, number, coeff_thermal_conductivity)  # noqa E501
-
-    def CalculateComboBox(self):
-        column_number = [0, 1]
-        # row = self.WallsTableWidget.rowCount() - 1
-        for row in range(self.CalculateTableWidget.rowCount()):
-            for number in column_number:
-                combo_box = QComboBox()
-                combo_box.addItems(self.parse_rooms(self.list_rooms))
-                self.CalculateTableWidget.setCellWidget(row, number, combo_box)
+            self.CalculateTableWidget.setCellWidget(
+                current_row, number, coeff_thermal_conductivity)
 
     def CalculateWallComboBox(self):
         for row in range(self.CalculateTableWidget.rowCount()):
             combo_box = QComboBox()
-            combo_box.addItems(['Тут будет ипморт стен'])
+            combo_box.addItems(['Тут будет импорт стен'])
             self.CalculateTableWidget.setCellWidget(row, 4, combo_box)
 
     def MakeCalculateCellReadOnly(self):
@@ -56,18 +52,32 @@ class CalculateTable():
                     self.CalculateTableWidget.setItem(row, col, item)
                 item.setFlags(flags)
 
-    def Get_and_update_rooms(self):
+    def GetAndUpdateRooms(self):
         table_contents = []
         count_temp = 0
         count_name = 0
+        existing_materials = set()
+        self.CalculateRoomsComboBox()
+
         for row in range(self.RoomsTableWidget.rowCount()):
             room_name_item = self.RoomsTableWidget.item(row, 0)
-            temp = self.RoomsTableWidget.cellWidget(row, 1)
+            coefficient_item = self.RoomsTableWidget.cellWidget(row, 1)
 
-            if room_name_item and temp:
+            if room_name_item and coefficient_item:
                 room_name = room_name_item.text()
-                temp = temp.value()
-                row_data = {'rooms_name': room_name, 'temp': temp}
+
+                if room_name in existing_materials:
+                    message_box = QMessageBox()
+                    message_box.critical(
+                        None, "Ошибка!", f"Помещение с названием '{room_name}' уже существует")
+                    message_box.setFixedSize(500, 200)
+                    return
+                else:
+                    existing_materials.add(room_name)
+
+                temperature = coefficient_item.value()
+                row_data = {'rooms_name': room_name,
+                            'temperature': temperature}
                 table_contents.append(row_data)
                 count_name += 1
             else:
@@ -78,22 +88,90 @@ class CalculateTable():
                 count_name = 0
                 return
 
-        for rooms in table_contents:
-            if rooms['temp'] == 0.0:
+        for materials in table_contents:
+            if materials['temperature'] == 0.0:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"Температура для помещения № {count_temp + 1} не заполнен")
+                    None, "Ошибка!", f"Температура для помещения № {count_temp + 1} не заполнена")
                 message_box.setFixedSize(500, 200)
-                count_temp = 0
+                count_temp += 1
                 return
-            count_temp += 1
+
         self.list_rooms = table_contents
+        self.ClearAndPopulateComboBox()  # очистите и обновите QComboBox
+        self.CalculateRoomsComboBox()  # добавьте скобки для вызова метода
+
+    def ClearAndPopulateComboBox(self):
+        column_number = [0, 1]
+        for row in range(self.CalculateTableWidget.rowCount()):
+            for col in column_number:
+                combo_box = self.CalculateTableWidget.cellWidget(row, col)
+                current_text = combo_box.currentText()
+
+                combo_box.clear()
+                combo_box.addItems(self.parse_rooms(self.list_rooms))
+
+                # Установите валидное текущее значение
+                index = combo_box.findText(current_text)
+                if index != -1:
+                    combo_box.setCurrentIndex(index)
+                elif combo_box.count() > 0:
+                    combo_box.setCurrentIndex(0)
+
+    def UpdateComboBox(self):
+        column_number = [0, 1]
+        self.SavePositionRooms()
+
+        for row in range(self.CalculateTableWidget.rowCount()):
+            for col in column_number:
+                combo_box = self.CalculateTableWidget.cellWidget(row, col)
+                current_text = combo_box.currentText()
+
+                combo_box.clear()
+                combo_box.addItems(self.parse_rooms(self.list_rooms))
+
+                # Восстановите текущее значение
+                index = combo_box.findText(current_text)
+                if index != -1:
+                    combo_box.setCurrentIndex(index)
+
+    def CalculateRoomsComboBox(self):
+        column_number = [0, 1]
+
+        for row in range(self.CalculateTableWidget.rowCount()):
+            for number in column_number:
+                combo_box = self.CalculateTableWidget.cellWidget(row, number)
+
+                # Проверка, существует ли уже QComboBox в ячейке
+                if combo_box is None:
+                    combo_box = QComboBox()
+                    self.CalculateTableWidget.setCellWidget(
+                        row, number, combo_box)
+
+                # Получаем список существующих значений в комбобоксе
+                existing_items = [combo_box.itemText(
+                    i) for i in range(combo_box.count())]
+
+                # Добавляем новые значения, не удаляя старые, и проверяем на дублирование
+                for new_item in self.parse_rooms(self.list_rooms):
+                    if new_item not in existing_items:
+                        combo_box.addItem(new_item)
 
     def parse_rooms(self, data):
         result = []
         for rooms_and_temp in data:
             result.append(rooms_and_temp['rooms_name'])
         return result
+
+    def SavePositionRooms(self):
+        number_column = [0, 1]
+        if self.list_rooms_position:
+            self.list_rooms_position.clear()
+
+        for row in range(self.CalculateTableWidget.rowCount()):
+            row_data = [self.CalculateTableWidget.cellWidget(
+                row, col).currentText() for col in number_column]
+            self.list_rooms_position.append(row_data)
 
     def ClearTableCalculate(self):
         self.CalculateTableWidget.setRowCount(0)
