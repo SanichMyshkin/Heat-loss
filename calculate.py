@@ -171,14 +171,14 @@ class CalculateTable():
         for row in range(self.WallsTableWidget.rowCount()):
             wall_name_item = self.WallsTableWidget.item(row, 0)
             coefficient_item = self.WallsTableWidget.item(row, 9)
-            
+
             if not coefficient_item:
                 message_box = QMessageBox()
                 message_box.critical(
                     None, "Ошибка!", "Коэффициенты теплопередачи для стен не расcчитанны!")
                 message_box.setFixedSize(500, 200)
                 return
-            
+
             if wall_name_item:
                 wall_name = wall_name_item.text()
 
