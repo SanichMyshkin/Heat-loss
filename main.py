@@ -25,6 +25,10 @@ class GUI(QMainWindow, MaterialsTable,
         self.list_rooms = []
         self.list_rooms_position = []
 
+        # Списки для передачи и обновлений стен
+        self.list_walls = []
+        self.list_walls_position = []
+
         # Инициализация методов для каждой таблицы
         self.set_autosize_table()
         self.materials()
@@ -76,12 +80,11 @@ class GUI(QMainWindow, MaterialsTable,
         '''Методы для таблицы расчеты'''
         self.AddRowCalculatePushButton.clicked.connect(self.AddCalculateRow)
         self.RemoveRowCalculatePushButton.clicked.connect(self.RemoveCalculateRow)  # noqa E501
-        self.GetRoomsPushButton.clicked.connect(self.GetRooms)
+        self.GetRoomsPushButton.clicked.connect(self.GetRoomsAndWalls)
 
         self.CalculateCountSpinBox()
-        self.CalculateWallComboBox()
-
         self.CalculateRoomsComboBox()
+        self.CalculateWallsComboBox()
         self.MakeCalculateCellReadOnly()
 
     def walls(self):
@@ -91,7 +94,7 @@ class GUI(QMainWindow, MaterialsTable,
         self.GetMaterialsPushButton.clicked.connect(self.GetMaterials)
 
         self.WallLayerComboBox()
-        self.MakeWallsCellReadOnly()
+        # self.MakeWallsCellReadOnly()
 
 
 def main():
