@@ -70,7 +70,7 @@ class CalculateTable():
                 if room_name in existing_rooms:
                     message_box = QMessageBox()
                     message_box.critical(
-                        None, "Ошибка!", f"Помещение с названием '{room_name}' уже существует")  # noqa
+                        None, "Ошибка!", f"Помещение с названием '{room_name}' уже существует")  # noqa E501
                     message_box.setFixedSize(500, 200)
                     return
                 else:
@@ -84,7 +84,7 @@ class CalculateTable():
             else:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"У помещения № {count_name + 1} не заполнено название")
+                    None, "Ошибка!", f"У помещения № {count_name + 1} не заполнено название")  # noqa E501
                 message_box.setFixedSize(500, 200)
                 count_name = 0
                 return
@@ -93,7 +93,7 @@ class CalculateTable():
             if materials['temperature'] == 0.0:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"Температура для помещения № {count_temp + 1} не заполнена")
+                    None, "Ошибка!", f"Температура для помещения № {count_temp + 1} не заполнена")  # noqa E501
                 message_box.setFixedSize(500, 200)
                 count_temp += 1
                 return
@@ -175,7 +175,7 @@ class CalculateTable():
             if not coefficient_item:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", "Коэффициенты теплопередачи для стен не расcчитанны!")
+                    None, "Ошибка!", "Коэффициенты теплопередачи для стен не расcчитанны!")  # noqa E501
                 message_box.setFixedSize(500, 200)
                 return
 
@@ -185,7 +185,7 @@ class CalculateTable():
                 if wall_name in existing_materials:
                     message_box = QMessageBox()
                     message_box.critical(
-                        None, "Ошибка!", f"Стена с названием '{wall_name}' уже существует") #
+                        None, "Ошибка!", f"Стена с названием '{wall_name}' уже существует")  # noqa E501
                     message_box.setFixedSize(500, 200)
                     return
                 else:
@@ -199,13 +199,13 @@ class CalculateTable():
             else:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"У стены № {count_name + 1} не заполнено название")
+                    None, "Ошибка!", f"У стены № {count_name + 1} не заполнено название")  # noqa E501
                 message_box.setFixedSize(500, 200)
                 count_name = 0
                 return
 
         self.list_walls = table_contents
-        self.CalculateWallsComboBox()  # Обновите комбобоксы после обновления материалов
+        self.CalculateWallsComboBox()
 
     def CalculateWallsComboBox(self):
         column_number = [4]
@@ -228,7 +228,7 @@ class CalculateTable():
             combo_box = self.CalculateTableWidget.cellWidget(row, 4)
             combo_box.clear()
             combo_box.addItems(self.parse_walls(self.list_walls))
-            if row < len(self.list_walls_position) and len(self.list_walls_position[row]) > 0:
+            if row < len(self.list_walls_position) and len(self.list_walls_position[row]) > 0:  # noqa E501
                 current_text = self.list_walls_position[row][0]
                 index = combo_box.findText(current_text)
                 if index != -1:
