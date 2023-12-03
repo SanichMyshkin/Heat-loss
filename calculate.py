@@ -185,7 +185,7 @@ class CalculateTable():
                 if wall_name in existing_materials:
                     message_box = QMessageBox()
                     message_box.critical(
-                        None, "Ошибка!", f"Стена с названием '{material_name}' уже существует")
+                        None, "Ошибка!", f"Стена с названием '{wall_name}' уже существует") #
                     message_box.setFixedSize(500, 200)
                     return
                 else:
