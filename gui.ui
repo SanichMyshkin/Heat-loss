@@ -26,14 +26,14 @@
          <x>0</x>
          <y>0</y>
          <width>995</width>
-         <height>734</height>
+         <height>736</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="Materials">
            <attribute name="title">
@@ -55,6 +55,11 @@
               <column>
                <property name="text">
                 <string>λ</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>δ,м</string>
                </property>
               </column>
              </widget>
@@ -162,16 +167,6 @@
               <column>
                <property name="text">
                 <string>Слой №5</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>λ</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>δ,м</string>
                </property>
               </column>
               <column>
@@ -325,7 +320,7 @@
      <x>0</x>
      <y>0</y>
      <width>1021</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

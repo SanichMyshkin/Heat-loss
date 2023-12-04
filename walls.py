@@ -76,8 +76,10 @@ class WallsTable:
         for row in range(self.MaterialsTableWidget.rowCount()):
             material_name_item = self.MaterialsTableWidget.item(row, 0)
             coefficient_item = self.MaterialsTableWidget.cellWidget(row, 1)
+            thickness_item = self.MaterialsTableWidget.cellWidget(
+                row, 2)
 
-            if material_name_item and coefficient_item:
+            if material_name_item and coefficient_item and thickness_item:
                 material_name = material_name_item.text()
 
                 # Проверка на уникальность материала
@@ -91,29 +93,31 @@ class WallsTable:
                     existing_materials.add(material_name)
 
                 coefficient_value = coefficient_item.value()
+                thickness_value = thickness_item.value()  # Получаем значение толщины
                 row_data = {'material_name': material_name,
-                            'coefficient_value': coefficient_value}
+                            'coefficient_value': coefficient_value,
+                            'thickness_value': thickness_value}  # Добавляем толщину в данные строки
                 table_contents.append(row_data)
                 count_name += 1
             else:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"У материала № {count_name + 1} не заполнено название")
+                    None, "Ошибка!", f"У материала № {count_name + 1} не заполнено название, коэффициент или толщина")
                 message_box.setFixedSize(500, 200)
                 count_name = 0
                 return
 
         for materials in table_contents:
-            if materials['coefficient_value'] == 0.0:
+            if materials['coefficient_value'] == 0.0 or materials['thickness_value'] == 0.0:
                 message_box = QMessageBox()
                 message_box.critical(
-                    None, "Ошибка!", f"Коэффициент для материала № {count_temp + 1} не заполнен")
+                    None, "Ошибка!", f"Коэффициент или толщина для материала № {count_temp + 1} не заполнены")
                 message_box.setFixedSize(500, 200)
                 count_temp += 1
                 return
 
         self.list_materials = table_contents
-        self.WallLayerComboBox()  # Обновите комбобоксы после обновления материалов
+        self.WallLayerComboBox()
 
     def parse_materials(self, data):
         result = []
@@ -135,3 +139,77 @@ class WallsTable:
     def ClearTableWalls(self):
         self.WallsTableWidget.setRowCount(0)
         self.AddWallsRow()
+
+    def CalculateWalls(self):
+        self.SavePositionMaterials()
+        temp_calc = self.temporary_calc()
+        if not temp_calc:
+            message_box = QMessageBox()
+            message_box.critical(
+                None, "Ошибка!", f"Материалы не обновлены!\nпожалуйста заново импортируйте лист материалов")
+            message_box.setFixedSize(500, 200)
+            return
+        for row in range(self.WallsTableWidget.rowCount()):
+            temp_item = QTableWidgetItem()
+            temp_item.setData(0, f'{temp_calc[row]}')
+            self.WallsTableWidget.setItem(row, 6, temp_item)
+
+            R = (1 / 8.7) + temp_calc[row] + (1/23)
+            R = float('{:.3f}'.format(R))
+            R_item = QTableWidgetItem()
+            R_item.setData(0, f'{R}')
+            self.WallsTableWidget.setItem(row, 7, R_item)
+
+    def temporary_calc(self):
+        result = []
+        current_table = []
+        division = 0
+        for row in range(self.MaterialsTableWidget.rowCount()):
+            current_material_name_item = self.MaterialsTableWidget.item(row, 0)
+            current_coefficient_item = self.MaterialsTableWidget.cellWidget(
+                row, 1)
+            current_thickness_item = self.MaterialsTableWidget.cellWidget(
+                row, 2)
+
+            material_name = current_material_name_item.text()
+            coefficient_value = current_coefficient_item.value()
+            thickness_value = current_thickness_item.value()
+            row_data = {'material_name': material_name,
+                        'coefficient_value': coefficient_value,
+                        'thickness_value': thickness_value
+                        }
+            current_table.append(row_data)
+        if self.compare_lists(self.list_materials, current_table):
+            '''Возвращаем None для ошибки и выхода,
+            так как материалы были изменены и нуждаются в обновлении'''
+            return
+
+        coefficient_dict = {
+            item['material_name']: item['coefficient_value'] for item in self.list_materials}
+        thickness_dict = {
+            item['material_name']: item['thickness_value'] for item in self.list_materials
+        }
+        for wall in self.list_material_position:
+            for material in wall:
+                division += thickness_dict[material] / \
+                    coefficient_dict[material]
+            result.append(float('{:.3f}'.format(division)))
+            division = 0
+        return result
+
+    def compare_lists(self, list1, list2):
+
+        set1 = {(item['material_name'],
+                item['coefficient_value'],
+                item['thickness_value'])
+                for item in list1}
+
+        set2 = {(item['material_name'],
+                item['coefficient_value'],
+                item['thickness_value'])
+                for item in list2}
+
+        if set1 == set2:
+            return False
+        else:
+            return True

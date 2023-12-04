@@ -92,7 +92,7 @@ class GUI(QMainWindow, MaterialsTable,
         self.AddRowWallsPushButton.clicked.connect(self.AddWallsRow)
         self.RemoveRowWallsPushButton.clicked.connect(self.RemoveWallsRow)
         self.GetMaterialsPushButton.clicked.connect(self.GetMaterials)
-
+        self.CalculateWallsPushButton.clicked.connect(self.CalculateWalls) # noqa
         self.WallLayerComboBox()
         # self.MakeWallsCellReadOnly()
 
