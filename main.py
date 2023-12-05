@@ -81,6 +81,7 @@ class GUI(QMainWindow, MaterialsTable,
         self.AddRowCalculatePushButton.clicked.connect(self.AddCalculateRow)
         self.RemoveRowCalculatePushButton.clicked.connect(self.RemoveCalculateRow)  # noqa E501
         self.GetRoomsPushButton.clicked.connect(self.GetRoomsAndWalls)
+        self.ShowCalculatePushButton.clicked.connect(self.ShowCalculate)
 
         self.CalculateCountSpinBox()
         self.CalculateRoomsComboBox()
@@ -92,9 +93,9 @@ class GUI(QMainWindow, MaterialsTable,
         self.AddRowWallsPushButton.clicked.connect(self.AddWallsRow)
         self.RemoveRowWallsPushButton.clicked.connect(self.RemoveWallsRow)
         self.GetMaterialsPushButton.clicked.connect(self.GetMaterials)
-        self.CalculateWallsPushButton.clicked.connect(self.CalculateWalls) # noqa
+        self.CalculateWallsPushButton.clicked.connect(self.CalculateWalls)  # noqa
         self.WallLayerComboBox()
-        # self.MakeWallsCellReadOnly()
+        self.MakeWallsCellReadOnly()
 
 
 def main():

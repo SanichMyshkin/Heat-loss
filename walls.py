@@ -16,7 +16,7 @@ class WallsTable:
     def AddWallsRow(self):
         self.WallsTableWidget.insertRow(self.WallsTableWidget.rowCount())
         self.WallLayerComboBox()
-        # self.MakeWallsCellReadOnly()
+        self.MakeWallsCellReadOnly()
 
     def RemoveWallsRow(self):
         self.WallsTableWidget.removeRow(self.WallsTableWidget.rowCount() - 1)

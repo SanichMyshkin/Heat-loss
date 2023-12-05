@@ -30,6 +30,22 @@ class CalculateTable():
         self.CalculateRoomsComboBox()
         self.MakeCalculateCellReadOnly()
 
+        # Получите номер новой строки
+        current_row = self.CalculateTableWidget.rowCount() - 1
+
+        # Получите QComboBox в новой строке для комнаты
+        room_combo_box1 = self.CalculateTableWidget.cellWidget(current_row, 0)
+
+        # Подключите сигнал currentIndexChanged к функции Get_temp
+        room_combo_box1.currentIndexChanged.connect(self.Get_temp)
+
+        room_combo_box2 = self.CalculateTableWidget.cellWidget(current_row, 1)
+
+        # Подключите сигнал currentIndexChanged к функции Get_temp
+        room_combo_box2.currentIndexChanged.connect(self.Get_temp)
+        # Вызовите Get_temp для обновления значений в новой строке
+        self.Get_temp()
+
     def RemoveCalculateRow(self):
         self.CalculateTableWidget.removeRow(
             self.CalculateTableWidget.rowCount() - 1)
@@ -101,6 +117,7 @@ class CalculateTable():
         self.list_rooms = table_contents
         self.ClearAndPopulateRoomsComboBox()
         self.CalculateRoomsComboBox()
+        self.Get_temp()
 
     def ClearAndPopulateRoomsComboBox(self):
         column_number = [0, 1]
@@ -127,6 +144,7 @@ class CalculateTable():
                 index = combo_box.findText(current_text)
                 if index != -1:
                     combo_box.setCurrentIndex(index)
+                combo_box.currentIndexChanged.connect(self.Get_temp)
 
     def CalculateRoomsComboBox(self):
         column_number = [0, 1]
@@ -170,7 +188,7 @@ class CalculateTable():
 
         for row in range(self.WallsTableWidget.rowCount()):
             wall_name_item = self.WallsTableWidget.item(row, 0)
-            coefficient_item = self.WallsTableWidget.item(row, 9)
+            coefficient_item = self.WallsTableWidget.item(row, 7)
 
             if not coefficient_item:
                 message_box = QMessageBox()
@@ -249,3 +267,38 @@ class CalculateTable():
             row_data = [self.CalculateTableWidget.cellWidget(
                 row, col).currentText()]
             self.list_walls_position.append(row_data)
+
+    def ShowCalculate(self):
+        self.Get_temp()
+
+    def Get_temp(self):
+        column_number = [0, 1]
+
+        temp_dict = {
+            item['rooms_name']: item['temperature'] for item in self.list_rooms
+        }
+        for row in range(self.CalculateTableWidget.rowCount()):
+            for col in column_number:
+                name_room = self.CalculateTableWidget.cellWidget(
+                    row, col).currentText()
+                temperature = temp_dict.get(name_room, 0.0)
+                temp_item = QTableWidgetItem()
+                temp_item.setData(0, f'{temperature}')
+                self.CalculateTableWidget.setItem(row, col + 2, temp_item)
+                self.CalculateTableWidget.item(
+                    row, col + 2).setText(f'{temperature}')
+
+    def compare_lists(self, list1, list2):
+
+        set1 = {(item['rooms_name'],
+                item['temperature'])
+                for item in list1}
+
+        set2 = {(item['rooms_name'],
+                item['temperature'])
+                for item in list2}
+
+        if set1 == set2:
+            return False
+        else:
+            return True
