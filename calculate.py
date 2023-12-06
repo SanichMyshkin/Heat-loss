@@ -31,15 +31,25 @@ class CalculateTable():
         self.MakeCalculateCellReadOnly()
 
         current_row = self.CalculateTableWidget.rowCount() - 1
+
         wall_combo_box = self.CalculateTableWidget.cellWidget(current_row, 4)
         wall_combo_box.currentIndexChanged.connect(self.Get_wall_coeff)
+
         room_combo_box1 = self.CalculateTableWidget.cellWidget(current_row, 0)
         room_combo_box1.currentIndexChanged.connect(self.Get_temp)
+
         room_combo_box2 = self.CalculateTableWidget.cellWidget(current_row, 1)
         room_combo_box2.currentIndexChanged.connect(self.Get_temp)
 
+        width_spin_box = self.CalculateTableWidget.cellWidget(current_row, 5)
+        width_spin_box.valueChanged.connect(self.Get_area)
+
+        height_spin_box = self.CalculateTableWidget.cellWidget(current_row, 6)
+        height_spin_box.valueChanged.connect(self.Get_area)
+
         self.Get_temp()
         self.Get_wall_coeff()
+        self.Get_area()
 
     def RemoveCalculateRow(self):
         self.CalculateTableWidget.removeRow(
@@ -53,6 +63,7 @@ class CalculateTable():
             coeff_thermal_conductivity.setMaximum(self.MAX_RANGE)
             self.CalculateTableWidget.setCellWidget(
                 current_row, number, coeff_thermal_conductivity)
+            coeff_thermal_conductivity.valueChanged.connect(self.Get_area)
 
     def MakeCalculateCellReadOnly(self):
         column_number = [2, 3, 7, 8, 9]
@@ -291,11 +302,7 @@ class CalculateTable():
         set2 = {(item['rooms_name'],
                 item['temperature'])
                 for item in list2}
-
-        if set1 == set2:
-            return True
-        else:
-            return False
+        return set1 == set2
 
     def valid_rooms(self):
         current_table = []
@@ -314,11 +321,12 @@ class CalculateTable():
 
     def Get_wall_coeff(self):
         col = 4
-        wall_dict = {}
-        for row in range(self.WallsTableWidget.rowCount()):
+        wall_dict = {
+            item['wall_name']: item['coefficient_value'] for item in self.list_walls}
+        ''' for row in range(self.WallsTableWidget.rowCount()):
             name_wall = self.WallsTableWidget.item(row, 0).text()
             R = self.WallsTableWidget.item(row, 7).text()
-            wall_dict[name_wall] = R
+            wall_dict[name_wall] = R'''
 
         for row in range(self.CalculateTableWidget.rowCount()):
             name_wall = self.CalculateTableWidget.cellWidget(
@@ -331,20 +339,15 @@ class CalculateTable():
                 row, col + 4).setText(f'{R}')
 
     def valid_walls(self):
-        # Получить текущие данные о стенах из таблицы
         current_table = []
         for row in range(self.WallsTableWidget.rowCount()):
             current_wall_name_item = self.WallsTableWidget.item(row, 0)
             current_coefficient_item = self.WallsTableWidget.item(row, 7)
-
             wall_name = current_wall_name_item.text()
             coefficient_value = current_coefficient_item.text()
-
             row_data = {'wall_name': wall_name,
                         'coefficient_value': coefficient_value}
             current_table.append(row_data)
-
-        # Сравнить текущие данные о стенах с сохраненными данными
         return self.compare_walls(current_table, self.list_walls)
 
     def compare_walls(self, list1, list2):
@@ -352,18 +355,70 @@ class CalculateTable():
                 for item in list1}
         set2 = {(item['wall_name'], item['coefficient_value'])
                 for item in list2}
-
-        # Если множества совпадают, данные считаются актуальными
         return set1 == set2
 
     def ShowCalculate(self):
+        if not self.list_rooms:
+            message_box = QMessageBox()
+            message_box.critical(
+                None, "Ошибка!", "Необходимо импортировать данные по помещениям!")
+            message_box.setFixedSize(500, 200)
+            return
+
+        if not self.list_walls:
+            message_box = QMessageBox()
+            message_box.critical(
+                None, "Ошибка!", "Необходимо импортировать данные по стенам!")
+            message_box.setFixedSize(500, 200)
+            return
+
         if self.valid_rooms() is False:
             message_box = QMessageBox()
             message_box.critical(
-                    None, "Ошибка!", f"Помещения устарели!\nПожалуйcта, обновите помещения!")  # noqa E501
+                None, "Ошибка!", "Помещения устарели!\nПожалуйста, обновите помещения!")
             message_box.setFixedSize(500, 200)
+            return
+
         if self.valid_walls() is False:
             message_box = QMessageBox()
             message_box.critical(
-                    None, "Ошибка!", f"Стены устарели!\nПожалуйcта, обновите стены!")  # noqa E501
+                None, "Ошибка!", "Стены устарели!\nПожалуйста, обновите стены!")
             message_box.setFixedSize(500, 200)
+            return
+
+        for row in range(self.CalculateTableWidget.rowCount()):
+            area = self.CalculateTableWidget.item(row, 7).text()
+            if area == '' or area == '0.0':
+                message_box = QMessageBox()
+                message_box.critical(
+                    None, "Ошибка!", "Площадь стен не может быть равна 0\nПожалуйста, проверьте площадь стен!")
+                message_box.setFixedSize(500, 200)
+                return
+
+        self.CalcAll()
+
+    def Get_area(self):
+        col = [5, 6]
+        for row in range(self.CalculateTableWidget.rowCount()):
+            width = self.CalculateTableWidget.cellWidget(row, col[0]).value()
+            height = self.CalculateTableWidget.cellWidget(row, col[1]).value()
+            area = width * height
+            area_item = QTableWidgetItem()
+            area_item.setData(0, f'{area}')
+            self.CalculateTableWidget.setItem(row, 7, area_item)
+            self.CalculateTableWidget.item(row, 7).setText(f'{area}')
+
+    def CalcAll(self):
+        for row in range(self.CalculateTableWidget.rowCount()):
+            temp1 = float(self.CalculateTableWidget.item(row, 2).text())
+            temp2 = float(self.CalculateTableWidget.item(row, 3).text())
+            area = float(self.CalculateTableWidget.item(row, 7).text())
+            k = float(self.CalculateTableWidget.item(row, 8).text())
+            if abs(temp1 - temp2) <= 3:
+                result = 'Нет потерь'
+            else:
+                result = k * area * abs(temp1 - temp2) / 1000
+            result_item = QTableWidgetItem()
+            result_item.setData(0, f'{result}')
+            self.CalculateTableWidget.setItem(row, 9, result_item)
+            self.CalculateTableWidget.item(row, 9).setText(f'{result}')
