@@ -141,14 +141,25 @@ class WallsTable:
         self.AddWallsRow()
 
     def CalculateWalls(self):
-        self.SavePositionMaterials()
-        temp_calc = self.temporary_calc()
-        if not temp_calc:
+        # Проверка наличия импортированных материалов
+        if not self.list_materials:
             message_box = QMessageBox()
             message_box.critical(
-                None, "Ошибка!", f"Материалы не обновлены!\nпожалуйста заново импортируйте лист материалов")
+                None, "Ошибка!", "Материалы не были импортированы! Пожалуйста, импортируйте лист материалов.")
             message_box.setFixedSize(500, 200)
             return
+
+        self.SavePositionMaterials()
+        temp_calc = self.temporary_calc()
+
+        # Проверка наличия расчетов перед выполнением следующих шагов
+        if temp_calc is None:
+            message_box = QMessageBox()
+            message_box.critical(
+                None, "Ошибка!", "Материалы были изменены и нуждаются в обновлении. Пожалуйста, переимпортируйте лист материалов.")
+            message_box.setFixedSize(500, 200)
+            return
+
         for row in range(self.WallsTableWidget.rowCount()):
             temp_item = QTableWidgetItem()
             temp_item.setData(0, f'{temp_calc[row]}')
