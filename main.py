@@ -16,6 +16,8 @@ class GUI(QMainWindow, MaterialsTable,
     def __init__(self):
         super(GUI, self).__init__()
         uic.loadUi(ui_path, self)
+        
+        self.setWindowTitle("Расчет тепловых потерь через внутренние ограждающие конструкции")
 
         # Списки для передачи и хранения материалов
         self.list_materials = []

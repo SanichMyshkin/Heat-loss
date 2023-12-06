@@ -108,7 +108,8 @@ class WallsTable:
                 return
 
         for materials in table_contents:
-            if materials['coefficient_value'] == 0.0 or materials['thickness_value'] == 0.0:
+            if materials['coefficient_value'] == 0.0 or \
+                    materials['thickness_value'] == 0.0:
                 message_box = QMessageBox()
                 message_box.critical(
                     None, "Ошибка!", f"Коэффициент или толщина для материала № {count_temp + 1} не заполнены")
@@ -145,7 +146,8 @@ class WallsTable:
         if not self.list_materials:
             message_box = QMessageBox()
             message_box.critical(
-                None, "Ошибка!", "Материалы не были импортированы! Пожалуйста, импортируйте лист материалов.")
+                None, "Ошибка!", "Материалы не были импортированы!\n \
+                Пожалуйста, импортируйте лист материалов.")
             message_box.setFixedSize(500, 200)
             return
 
@@ -156,7 +158,8 @@ class WallsTable:
         if temp_calc is None:
             message_box = QMessageBox()
             message_box.critical(
-                None, "Ошибка!", "Материалы были изменены и нуждаются в обновлении. Пожалуйста, переимпортируйте лист материалов.")
+                None, "Ошибка!", "Материалы были изменены и нуждаются в обновлении.\n \
+                    Пожалуйста, переимпортируйте лист материалов.")
             message_box.setFixedSize(500, 200)
             return
 
