@@ -269,14 +269,18 @@ class CalculateTable():
             self.list_walls_position.append(row_data)
 
     def ShowCalculate(self):
-        self.Get_temp()
+        if self.valid_rooms() is False:
+            message_box = QMessageBox()
+            message_box.critical(
+                    None, "Ошибка!", f"Помещения устарели!\nПожалуйcта, обновите помещения!")  # noqa E501
+            message_box.setFixedSize(500, 200)
 
     def Get_temp(self):
         column_number = [0, 1]
-
         temp_dict = {
             item['rooms_name']: item['temperature'] for item in self.list_rooms
         }
+
         for row in range(self.CalculateTableWidget.rowCount()):
             for col in column_number:
                 name_room = self.CalculateTableWidget.cellWidget(
@@ -288,7 +292,7 @@ class CalculateTable():
                 self.CalculateTableWidget.item(
                     row, col + 2).setText(f'{temperature}')
 
-    def compare_lists(self, list1, list2):
+    def compare_rooms(self, list1, list2):
 
         set1 = {(item['rooms_name'],
                 item['temperature'])
@@ -299,6 +303,21 @@ class CalculateTable():
                 for item in list2}
 
         if set1 == set2:
-            return False
-        else:
             return True
+        else:
+            return False
+
+    def valid_rooms(self):
+        current_table = []
+        for row in range(self.RoomsTableWidget.rowCount()):
+            current_room_name_item = self.RoomsTableWidget.item(row, 0)
+            current_temp_item = self.RoomsTableWidget.cellWidget(
+                row, 1)
+
+            room_name = current_room_name_item.text()
+            temp_value = current_temp_item.value()
+            row_data = {'rooms_name': room_name,
+                        'temperature': temp_value,
+                        }
+            current_table.append(row_data)
+        return self.compare_rooms(current_table, self.list_rooms)
