@@ -28,7 +28,6 @@ class CalculateTable():
         self.CalculateCountSpinBox()
         self.CalculateWallsComboBox()
         self.CalculateRoomsComboBox()
-        self.MakeCalculateCellReadOnly()
 
         current_row = self.CalculateTableWidget.rowCount() - 1
 
@@ -50,6 +49,7 @@ class CalculateTable():
         self.Get_temp()
         self.Get_wall_coeff()
         self.Get_area()
+        self.MakeCalculateCellReadOnly()
 
     def RemoveCalculateRow(self):
         self.CalculateTableWidget.removeRow(
@@ -124,6 +124,7 @@ class CalculateTable():
         self.ClearAndPopulateRoomsComboBox()
         self.CalculateRoomsComboBox()
         self.Get_temp()
+        self.MakeCalculateCellReadOnly()
 
     def ClearAndPopulateRoomsComboBox(self):
         column_number = [0, 1]
@@ -407,6 +408,7 @@ class CalculateTable():
             area_item.setData(0, f'{area}')
             self.CalculateTableWidget.setItem(row, 7, area_item)
             self.CalculateTableWidget.item(row, 7).setText(f'{area}')
+        self.MakeCalculateCellReadOnly()
 
     def CalcAll(self):
         for row in range(self.CalculateTableWidget.rowCount()):
@@ -422,3 +424,4 @@ class CalculateTable():
             result_item.setData(0, f'{result}')
             self.CalculateTableWidget.setItem(row, 9, result_item)
             self.CalculateTableWidget.item(row, 9).setText(f'{result}')
+        self.MakeCalculateCellReadOnly()

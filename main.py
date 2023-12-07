@@ -1,11 +1,14 @@
 import sys
+import os
+
 from PyQt6.QtWidgets import QMainWindow, QHeaderView, QApplication
 from PyQt6 import uic
+
 from materials import MaterialsTable
 from walls import WallsTable
 from rooms import RoomsTable
 from calculate import CalculateTable
-import os
+
 
 ui_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'gui.ui'))
 
@@ -16,8 +19,9 @@ class GUI(QMainWindow, MaterialsTable,
     def __init__(self):
         super(GUI, self).__init__()
         uic.loadUi(ui_path, self)
-        
-        self.setWindowTitle("Расчет тепловых потерь через внутренние ограждающие конструкции")
+
+        self.setWindowTitle(
+            "Расчет тепловых потерь через внутренние ограждающие конструкции")
 
         # Списки для передачи и хранения материалов
         self.list_materials = []

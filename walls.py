@@ -173,6 +173,7 @@ class WallsTable:
             R_item = QTableWidgetItem()
             R_item.setData(0, f'{R}')
             self.WallsTableWidget.setItem(row, 7, R_item)
+        self.MakeWallsCellReadOnly()
 
     def temporary_calc(self):
         result = []

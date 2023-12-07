@@ -26,7 +26,7 @@
          <x>0</x>
          <y>0</y>
          <width>995</width>
-         <height>734</height>
+         <height>736</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -39,8 +39,15 @@
            <attribute name="title">
             <string>Материалы</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_5">
-            <item row="0" column="0" colspan="2">
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="ImportMaterialsPushButton">
+              <property name="text">
+               <string>Импорт материалов</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
              <widget class="QTableWidget" name="MaterialsTableWidget">
               <row>
                <property name="text">
@@ -64,19 +71,23 @@
               </column>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="AddRowMaterialsPushButton">
-              <property name="text">
-               <string>Добавить строку</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="RemoveRowMaterialsPushButton">
-              <property name="text">
-               <string>Удалить строку</string>
-              </property>
-             </widget>
+            <item row="2" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QPushButton" name="AddRowMaterialsPushButton">
+                <property name="text">
+                 <string>Добавить строку</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RemoveRowMaterialsPushButton">
+                <property name="text">
+                 <string>Удалить строку</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -85,21 +96,14 @@
             <string>Помещения</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="1" column="1">
-             <widget class="QPushButton" name="RemoveRowRoomsPushButton">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="ImportRoomsPushButton">
               <property name="text">
-               <string>Удалить строку</string>
+               <string>Импорт помещений</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QPushButton" name="AddRowRoomsPushButton">
-              <property name="text">
-               <string>Добавить строку</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" colspan="2">
              <widget class="QTableWidget" name="RoomsTableWidget">
               <row>
                <property name="text">
@@ -117,6 +121,24 @@
                </property>
               </column>
              </widget>
+            </item>
+            <item row="2" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QPushButton" name="AddRowRoomsPushButton">
+                <property name="text">
+                 <string>Добавить строку</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RemoveRowRoomsPushButton">
+                <property name="text">
+                 <string>Удалить строку</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -320,16 +342,14 @@
      <x>0</x>
      <y>0</y>
      <width>1021</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="open_file"/>
     <addaction name="save_file"/>
-    <addaction name="close_file"/>
    </widget>
    <widget class="QMenu" name="about">
     <property name="title">
@@ -349,13 +369,15 @@
     <addaction name="separator"/>
     <addaction name="ClearAll"/>
    </widget>
-   <widget class="QMenu" name="create">
+   <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>Создать</string>
+     <string>Экспорт</string>
     </property>
+    <addaction name="ExpMaterials"/>
+    <addaction name="ExpRooms"/>
    </widget>
    <addaction name="menu"/>
-   <addaction name="create"/>
+   <addaction name="menu_2"/>
    <addaction name="clear"/>
    <addaction name="about"/>
   </widget>
@@ -367,7 +389,7 @@
   </action>
   <action name="save_file">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Сохранить</string>
@@ -414,6 +436,16 @@
   <action name="ClearAll">
    <property name="text">
     <string>Очистить ВСЕ</string>
+   </property>
+  </action>
+  <action name="ExpMaterials">
+   <property name="text">
+    <string>Экспорт Материалов</string>
+   </property>
+  </action>
+  <action name="ExpRooms">
+   <property name="text">
+    <string>Экспорт Помещений</string>
    </property>
   </action>
  </widget>
