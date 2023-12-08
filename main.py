@@ -119,6 +119,8 @@ class GUI(QMainWindow, MaterialsTable,
             wb.remove(wb['Sheet'])
         self.SaveMaterials(wb)
         self.SaveRooms(wb)
+        self.SaveWalls(wb)
+        self.SaveCalculate(wb)
         wb.save(path)
         QMessageBox.information(
             self, "Успешно", "Файл успешно сохранен!")
@@ -150,16 +152,99 @@ class GUI(QMainWindow, MaterialsTable,
             coeff_value = self.MaterialsTableWidget.cellWidget(row, 1).value()
             thickness_value = self.MaterialsTableWidget.cellWidget(
                 row, 2).value()
-            name_materials = name_materials_item.text() if name_materials_item else "-"
+            name_materials = name_materials_item.text() if name_materials_item else ""
             ws_materials.cell(row=row + 2, column=1, value=name_materials)
             ws_materials.cell(row=row + 2, column=2, value=coeff_value)
             ws_materials.cell(row=row + 2, column=3, value=thickness_value)
 
     def SaveWalls(self, workbook):
-        pass
+        ws_walls = workbook.create_sheet("Стены", 2)
+        column_headers = ["Наименование", "Слой №1", "Слой №2",
+                          "Слой №3", "Слой №4", "Слой №5", "δ/λ", "R"]
+        for col_num, header in enumerate(column_headers, 1):
+            header_cell = ws_walls.cell(row=1, column=col_num)
+            header_cell.value = header
 
-    def SaveCaclulate(self, workbook):
-        pass
+        for row in range(self.WallsTableWidget.rowCount()):
+            name_walls_item = self.WallsTableWidget.item(row, 0)
+            layer_1_value = self.WallsTableWidget.cellWidget(
+                row, 1).currentText()
+            layer_2_value = self.WallsTableWidget.cellWidget(
+                row, 2).currentText()
+            layer_3_value = self.WallsTableWidget.cellWidget(
+                row, 3).currentText()
+            layer_4_value = self.WallsTableWidget.cellWidget(
+                row, 4).currentText()
+            layer_5_value = self.WallsTableWidget.cellWidget(
+                row, 5).currentText()
+
+            coeff_1_value = self.WallsTableWidget.item(row, 6).text()
+            coeff_2_value = self.WallsTableWidget.item(row, 7).text()
+
+            ws_walls.cell(row=row + 2, column=1,
+                          value=name_walls_item.text() if name_walls_item else "")
+            ws_walls.cell(row=row + 2, column=2, value=layer_1_value)
+            ws_walls.cell(row=row + 2, column=3, value=layer_2_value)
+            ws_walls.cell(row=row + 2, column=4, value=layer_3_value)
+            ws_walls.cell(row=row + 2, column=5, value=layer_4_value)
+            ws_walls.cell(row=row + 2, column=6, value=layer_5_value)
+
+            ws_walls.cell(row=row + 2, column=7,
+                          value=coeff_1_value if coeff_1_value else "")
+            ws_walls.cell(row=row + 2, column=8,
+                          value=coeff_2_value if coeff_2_value else "")
+
+    def SaveCalculate(self, workbook):
+        ws_calc = workbook.create_sheet("Итоговые расчеты", 3)
+        column_headers = ["Помещение №1", "Помещение №2",
+                          "t1, °С", "t2, °С",
+                          "Стена", "Высота", "Ширрина", "Площадь",
+                          "К, Вт/(м2 ˚С)", "Теплопотери"]
+        for col_num, header in enumerate(column_headers, 1):
+            header_cell = ws_calc.cell(row=1, column=col_num)
+            header_cell.value = header
+
+        for row in range(self.CalculateTableWidget.rowCount()):
+            name_wall_combobox1 = self.CalculateTableWidget.cellWidget(row, 0)
+            name_wall_combobox2 = self.CalculateTableWidget.cellWidget(row, 1)
+            temp_1_item = self.CalculateTableWidget.item(row, 2)
+            temp_2_item = self.CalculateTableWidget.item(row, 3)
+            wall_combobox = self.CalculateTableWidget.cellWidget(row, 4)
+            width_spinbox = self.CalculateTableWidget.cellWidget(row, 6)
+            height_spinbox = self.CalculateTableWidget.cellWidget(row, 5)
+            area_item = self.CalculateTableWidget.item(row, 7)
+            coeff_1_item = self.CalculateTableWidget.item(row, 8)
+            coeff_2_item = self.CalculateTableWidget.item(row, 9)
+
+            ws_calc.cell(row=row + 2, column=1,
+                         value=name_wall_combobox1.currentText() if name_wall_combobox1 else "")
+            
+            ws_calc.cell(row=row + 2, column=2,
+                         value=name_wall_combobox2.currentText() if name_wall_combobox2 else "")
+            
+            ws_calc.cell(row=row + 2, column=3,
+                         value=temp_1_item.text() if temp_1_item else "")
+            
+            ws_calc.cell(row=row + 2, column=4,
+                         value=temp_2_item.text() if temp_2_item else "")
+            
+            ws_calc.cell(row=row + 2, column=5,
+                         value=wall_combobox.currentText() if wall_combobox else "")
+            
+            ws_calc.cell(row=row + 2, column=6,
+                         value=width_spinbox.value() if width_spinbox else 0)
+            
+            ws_calc.cell(row=row + 2, column=7,
+                         value=height_spinbox.value() if height_spinbox else 0)
+            
+            ws_calc.cell(row=row + 2, column=8,
+                         value=area_item.text() if area_item else "")
+            
+            ws_calc.cell(row=row + 2, column=9,
+                         value=coeff_1_item.text() if coeff_1_item else "")
+            
+            ws_calc.cell(row=row + 2, column=10,
+                         value=coeff_2_item.text() if coeff_2_item else "")
 
     def ExpMaterials(self):
         file_dialog = QFileDialog()
