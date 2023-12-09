@@ -11,7 +11,6 @@ from walls import WallsTable
 from rooms import RoomsTable
 from calculate import CalculateTable
 
-
 ui_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'gui.ui'))
 
 
@@ -61,6 +60,23 @@ class GUI(QMainWindow, MaterialsTable,
             self.LoadMaterials)
         self.ImportRoomsPushButton.clicked.connect(
             self.LoadRooms)
+
+        # Иницализация методов справки
+        self.AuthorsAction.triggered.connect(self.AuthorsMessage)
+        self.TutorialAction.triggered.connect(self.TutorialMessage)
+
+    def TutorialMessage(self):
+        message_box = QMessageBox()
+        message_box.information(
+            None, "Руководство", "Тут будет инструкция по использованию приложением\n (◕‿◕)")
+        message_box.setFixedSize(500, 200)
+
+    def AuthorsMessage(self):
+        message_box = QMessageBox()
+        message_box.information(
+            None, "Авторы",
+            "Данное приложение было разработано студентами НИУ МГСУ 4 курса направления ИСТАС, \nгруппы ИЦТМС 4-2, \n\nМышкиным А.В. \nи \nДубровиным В.А.\n2023 г.")
+        message_box.setFixedSize(500, 200)
 
     def ClearAllTable(self):
         '''Метод очищения всех таблиц'''
@@ -194,7 +210,6 @@ class GUI(QMainWindow, MaterialsTable,
                 row - 2, 0, QTableWidgetItem(name_room))
             self.RoomsTableWidget.cellWidget(row - 2, 1).setValue(
                 0.0 if temp is None or isinstance(temp, str) else temp)
-
 
     def Save(self):
         file_dialog = QFileDialog()

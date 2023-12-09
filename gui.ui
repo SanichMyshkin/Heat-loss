@@ -355,8 +355,8 @@
     <property name="title">
      <string>Справка</string>
     </property>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
+    <addaction name="TutorialAction"/>
+    <addaction name="AuthorsAction"/>
    </widget>
    <widget class="QMenu" name="clear">
     <property name="title">
@@ -407,14 +407,14 @@
     <string>Очистить Материалы</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="TutorialAction">
    <property name="text">
     <string>Руководство</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="AuthorsAction">
    <property name="text">
-    <string>Создатель</string>
+    <string>Создатели</string>
    </property>
   </action>
   <action name="ClearRooms">

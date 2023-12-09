@@ -108,8 +108,8 @@ class WallsTable:
                 message_box.critical(
                     None, "Ошибка!", f"Коэффициент или толщина для материала № {count_temp + 1} не заполнены")
                 message_box.setFixedSize(500, 200)
-                count_temp += 1
                 return
+            count_temp += 1
 
         self.list_materials = table_contents
         self.WallLayerComboBox()
@@ -133,6 +133,8 @@ class WallsTable:
 
     def ClearTableWalls(self):
         self.WallsTableWidget.setRowCount(0)
+        self.list_materials.clear()
+        self.list_material_position.clear()
         self.AddWallsRow()
 
     def CalculateWalls(self):
@@ -162,7 +164,7 @@ class WallsTable:
             temp_item.setData(0, f'{temp_calc[row]}')
             self.WallsTableWidget.setItem(row, 6, temp_item)
 
-            R = (1 / 8.7) + temp_calc[row] + (1/23)
+            R = (1 / 8.7) + temp_calc[row] + (1 / 23)
             R = float('{:.3f}'.format(R))
             R_item = QTableWidgetItem()
             R_item.setData(0, f'{R}')
@@ -183,14 +185,13 @@ class WallsTable:
             material_name = current_material_name_item.text()
             coefficient_value = current_coefficient_item.value()
             thickness_value = current_thickness_item.value()
+
             row_data = {'material_name': material_name,
                         'coefficient_value': coefficient_value,
                         'thickness_value': thickness_value
                         }
             current_table.append(row_data)
         if self.compare_lists(self.list_materials, current_table):
-            '''Возвращаем None для ошибки и выхода,
-            так как материалы были изменены и нуждаются в обновлении'''
             return
 
         coefficient_dict = {
@@ -209,13 +210,13 @@ class WallsTable:
     def compare_lists(self, list1, list2):
 
         set1 = {(item['material_name'],
-                item['coefficient_value'],
-                item['thickness_value'])
+                 item['coefficient_value'],
+                 item['thickness_value'])
                 for item in list1}
 
         set2 = {(item['material_name'],
-                item['coefficient_value'],
-                item['thickness_value'])
+                 item['coefficient_value'],
+                 item['thickness_value'])
                 for item in list2}
 
         if set1 == set2:

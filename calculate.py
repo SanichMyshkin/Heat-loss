@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QDoubleSpinBox, \
 from PyQt6 import QtCore
 
 
-class CalculateTable():
+class CalculateTable:
     MAX_RANGE = 10000.0
 
     def __init__(self):
@@ -78,7 +78,6 @@ class CalculateTable():
 
     def GetAndUpdateRooms(self):
         table_contents = []
-        count_temp = 0
         count_name = 0
         existing_rooms = set()
 
@@ -109,15 +108,6 @@ class CalculateTable():
                     None, "Ошибка!", f"У помещения № {count_name + 1} не заполнено название")  # noqa E501
                 message_box.setFixedSize(500, 200)
                 count_name = 0
-                return
-
-        for materials in table_contents:
-            if materials['temperature'] == 0.0:
-                message_box = QMessageBox()
-                message_box.critical(
-                    None, "Ошибка!", f"Температура для помещения № {count_temp + 1} не заполнена")  # noqa E501
-                message_box.setFixedSize(500, 200)
-                count_temp += 1
                 return
 
         self.list_rooms = table_contents
@@ -186,7 +176,12 @@ class CalculateTable():
 
     def ClearTableCalculate(self):
         self.CalculateTableWidget.setRowCount(0)
+        self.list_rooms.clear()
+        self.list_rooms_position.clear()
+        self.list_walls.clear()
+        self.list_walls_position.clear()
         self.AddCalculateRow()
+
 
     def GetAndUpdateWalls(self):
         table_contents = []
@@ -297,11 +292,11 @@ class CalculateTable():
     def compare_rooms(self, list1, list2):
 
         set1 = {(item['rooms_name'],
-                item['temperature'])
+                 item['temperature'])
                 for item in list1}
 
         set2 = {(item['rooms_name'],
-                item['temperature'])
+                 item['temperature'])
                 for item in list2}
         return set1 == set2
 
