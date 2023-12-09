@@ -182,7 +182,6 @@ class CalculateTable:
         self.list_walls_position.clear()
         self.AddCalculateRow()
 
-
     def GetAndUpdateWalls(self):
         table_contents = []
         count_name = 0

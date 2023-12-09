@@ -26,14 +26,14 @@
          <x>0</x>
          <y>0</y>
          <width>995</width>
-         <height>757</height>
+         <height>755</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="Materials">
            <attribute name="title">
@@ -61,12 +61,12 @@
               </column>
               <column>
                <property name="text">
-                <string>λ</string>
+                <string>λ, кВт/(м˚С)</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>δ,м</string>
+                <string>δ, м</string>
                </property>
               </column>
              </widget>
@@ -198,7 +198,7 @@
               </column>
               <column>
                <property name="text">
-                <string>R</string>
+                <string>R, м² (°C/кВт)</string>
                </property>
               </column>
              </widget>
@@ -276,27 +276,27 @@
               </column>
               <column>
                <property name="text">
-                <string>Высота стены</string>
+                <string>Высота, м</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Ширина стены</string>
+                <string>Ширина, м</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Площадь стены</string>
+                <string>Площадь, м²</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>К, Вт/(м2 ˚С)</string>
+                <string>К, кВт/(м2 ˚С)</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Теплопотери</string>
+                <string>Q, кВт/ч</string>
                </property>
               </column>
              </widget>
@@ -342,7 +342,7 @@
      <x>0</x>
      <y>0</y>
      <width>1021</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
