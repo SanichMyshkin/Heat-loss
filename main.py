@@ -3,8 +3,8 @@ import os
 import openpyxl
 
 from PyQt6.QtWidgets import QMainWindow, QHeaderView, \
-    QApplication, QFileDialog, QMessageBox
-from PyQt6 import uic
+    QApplication, QFileDialog, QMessageBox, QTableWidgetItem
+from PyQt6 import uic, QtGui
 
 from materials import MaterialsTable
 from walls import WallsTable
@@ -24,7 +24,7 @@ class GUI(QMainWindow, MaterialsTable,
 
         self.setWindowTitle(
             "Расчет тепловых потерь через внутренние ограждающие конструкции")
-
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
         # Списки для передачи и хранения материалов
         self.list_materials = []
         self.list_material_position = []
@@ -50,9 +50,17 @@ class GUI(QMainWindow, MaterialsTable,
         self.ClearRooms.triggered.connect(self.ClearTableRooms)
         self.ClearCalculate.triggered.connect(self.ClearTableCalculate)
         self.ClearAll.triggered.connect(self.ClearAllTable)
+
+        # Инициализация методов для Сохранения и экспорта данных
         self.SaveAll.triggered.connect(self.Save)
         self.ExpMaterialsAction.triggered.connect(self.ExpMaterials)
         self.ExpRoomsAction.triggered.connect(self.ExpRooms)
+
+        # Инициализация методов для Имопрта Данных
+        self.ImportMaterialsPushButton.clicked.connect(
+            self.LoadMaterials)
+        self.ImportRoomsPushButton.clicked.connect(
+            self.LoadRooms)
 
     def ClearAllTable(self):
         '''Метод очищения всех таблиц'''
@@ -107,6 +115,86 @@ class GUI(QMainWindow, MaterialsTable,
         self.CalculateWallsPushButton.clicked.connect(self.CalculateWalls)  # noqa
         self.WallLayerComboBox()
         self.MakeWallsCellReadOnly()
+
+    def LoadMaterials(self):
+        file_dialog = QFileDialog()
+        path, _ = file_dialog.getOpenFileName(
+            self, "Открыть файл", "", "Excel Files (*.xlsx);;All Files (*)")
+        if not path:
+            return
+
+        if not os.path.getsize(path):
+            QMessageBox.warning(self, "Внимание", "Выбранный файл пуст.")
+            return
+
+        try:
+            wb = openpyxl.load_workbook(path)
+            if any(sheet.max_row > 1 for sheet in wb.worksheets):
+                self.ImportMaterials(wb)
+                QMessageBox.information(
+                    self, "Успешно", "Данные успешно загружены!")
+            else:
+                QMessageBox.warning(
+                    self, "Внимание", "Выбранный файл Excel пуст.")
+        except Exception as e:
+            QMessageBox.warning(
+                self, "Ошибка", f"Произошла ошибка при загрузке файла: {str(e)}")
+
+    def ImportMaterials(self, workbook):
+        ws_materials = workbook.active
+        self.MaterialsTableWidget.setRowCount(0)
+
+        for row in range(2, ws_materials.max_row + 1):
+            name_materials = ws_materials.cell(row=row, column=1).value
+            coeff_value = ws_materials.cell(row=row, column=2).value
+            thickness_value = ws_materials.cell(row=row, column=3).value
+
+            self.AddMaterialsRow()
+            self.MaterialsTableWidget.setItem(
+                row - 2, 0, QTableWidgetItem(name_materials))
+            self.MaterialsTableWidget.cellWidget(row - 2, 1).setValue(
+                0.0 if coeff_value is None or isinstance(coeff_value, str) else coeff_value)
+            self.MaterialsTableWidget.cellWidget(row - 2, 2).setValue(
+                0.0 if thickness_value is None or isinstance(thickness_value, str) else thickness_value)
+
+    def LoadRooms(self):
+        file_dialog = QFileDialog()
+        path, _ = file_dialog.getOpenFileName(
+            self, "Открыть файл", "", "Excel Files (*.xlsx);;All Files (*)")
+        if not path:
+            return
+
+        if not os.path.getsize(path):
+            QMessageBox.warning(self, "Внимание", "Выбранный файл пуст.")
+            return
+
+        try:
+            wb = openpyxl.load_workbook(path)
+            if any(sheet.max_row > 1 for sheet in wb.worksheets):
+                self.ImportRooms(wb)
+                QMessageBox.information(
+                    self, "Успешно", "Данные успешно загружены!")
+            else:
+                QMessageBox.warning(
+                    self, "Внимание", "Выбранный файл Excel пуст.")
+        except Exception as e:
+            QMessageBox.warning(
+                self, "Ошибка", f"Произошла ошибка при загрузке файла: {str(e)}")
+
+    def ImportRooms(self, workbook):
+        ws_rooms = workbook.active
+        self.RoomsTableWidget.setRowCount(0)
+
+        for row in range(2, ws_rooms.max_row + 1):
+            name_room = ws_rooms.cell(row=row, column=1).value
+            temp = ws_rooms.cell(row=row, column=2).value
+
+            self.AddRoomsRow()
+            self.RoomsTableWidget.setItem(
+                row - 2, 0, QTableWidgetItem(name_room))
+            self.RoomsTableWidget.cellWidget(row - 2, 1).setValue(
+                0.0 if temp is None or isinstance(temp, str) else temp)
+
 
     def Save(self):
         file_dialog = QFileDialog()
@@ -218,31 +306,31 @@ class GUI(QMainWindow, MaterialsTable,
 
             ws_calc.cell(row=row + 2, column=1,
                          value=name_wall_combobox1.currentText() if name_wall_combobox1 else "")
-            
+
             ws_calc.cell(row=row + 2, column=2,
                          value=name_wall_combobox2.currentText() if name_wall_combobox2 else "")
-            
+
             ws_calc.cell(row=row + 2, column=3,
                          value=temp_1_item.text() if temp_1_item else "")
-            
+
             ws_calc.cell(row=row + 2, column=4,
                          value=temp_2_item.text() if temp_2_item else "")
-            
+
             ws_calc.cell(row=row + 2, column=5,
                          value=wall_combobox.currentText() if wall_combobox else "")
-            
+
             ws_calc.cell(row=row + 2, column=6,
                          value=width_spinbox.value() if width_spinbox else 0)
-            
+
             ws_calc.cell(row=row + 2, column=7,
                          value=height_spinbox.value() if height_spinbox else 0)
-            
+
             ws_calc.cell(row=row + 2, column=8,
                          value=area_item.text() if area_item else "")
-            
+
             ws_calc.cell(row=row + 2, column=9,
                          value=coeff_1_item.text() if coeff_1_item else "")
-            
+
             ws_calc.cell(row=row + 2, column=10,
                          value=coeff_2_item.text() if coeff_2_item else "")
 
@@ -277,6 +365,7 @@ class GUI(QMainWindow, MaterialsTable,
 
 def main():
     app = QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon('icon.png'))
     window = GUI()
     window.show()
     app.exec()

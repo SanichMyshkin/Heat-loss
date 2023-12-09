@@ -37,17 +37,11 @@ class WallsTable:
         for row in range(self.WallsTableWidget.rowCount()):
             for number in column_number:
                 combo_box = self.WallsTableWidget.cellWidget(row, number)
-
-                # Проверка, существует ли уже QComboBox в ячейке
                 if combo_box is None:
                     combo_box = QComboBox()
                     self.WallsTableWidget.setCellWidget(row, number, combo_box)
-
-                # Получаем список существующих значений в комбобоксе
                 existing_items = [combo_box.itemText(
                     i) for i in range(combo_box.count())]
-
-                # Добавляем новые значения, не удаляя старые, и проверяем на дублирование
                 for new_item in self.parse_materials(self.list_materials):
                     if new_item not in existing_items:
                         combo_box.addItem(new_item)
