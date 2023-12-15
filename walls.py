@@ -164,7 +164,7 @@ class WallsTable:
             temp_item.setData(0, f'{temp_calc[row]}')
             self.WallsTableWidget.setItem(row, 6, temp_item)
 
-            R = (1 / 8.7) + temp_calc[row] + (1 / 23)
+            R = ((1 / 8.7) + temp_calc[row] + (1 / 23)) * 0.82
             R = float('{:.3f}'.format(R))
             R_item = QTableWidgetItem()
             R_item.setData(0, f'{R}')

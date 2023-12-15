@@ -26,7 +26,7 @@
          <x>0</x>
          <y>0</y>
          <width>995</width>
-         <height>755</height>
+         <height>757</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -61,7 +61,7 @@
               </column>
               <column>
                <property name="text">
-                <string>λ, кВт/(м˚С)</string>
+                <string>λ, Вт/(м˚С)</string>
                </property>
               </column>
               <column>
@@ -198,7 +198,7 @@
               </column>
               <column>
                <property name="text">
-                <string>R, м² (°C/кВт)</string>
+                <string>R, м² (°C/Вт)</string>
                </property>
               </column>
              </widget>
@@ -291,7 +291,7 @@
               </column>
               <column>
                <property name="text">
-                <string>К, кВт/(м2 ˚С)</string>
+                <string>К, Вт/(м² ˚С)</string>
                </property>
               </column>
               <column>
@@ -342,7 +342,7 @@
      <x>0</x>
      <y>0</y>
      <width>1021</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

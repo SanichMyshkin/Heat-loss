@@ -191,7 +191,7 @@ class CalculateTable:
             wall_name_item = self.WallsTableWidget.item(row, 0)
             coefficient_item = self.WallsTableWidget.item(row, 7)
 
-            if not coefficient_item:
+            if not coefficient_item.text():
                 message_box = QMessageBox()
                 message_box.critical(
                     None, "Ошибка!", "Коэффициенты теплопередачи для стен не расcчитанны!")  # noqa E501
@@ -318,20 +318,17 @@ class CalculateTable:
         col = 4
         wall_dict = {
             item['wall_name']: item['coefficient_value'] for item in self.list_walls}
-        ''' for row in range(self.WallsTableWidget.rowCount()):
-            name_wall = self.WallsTableWidget.item(row, 0).text()
-            R = self.WallsTableWidget.item(row, 7).text()
-            wall_dict[name_wall] = R'''
 
         for row in range(self.CalculateTableWidget.rowCount()):
             name_wall = self.CalculateTableWidget.cellWidget(
                 row, col).currentText()
-            R = wall_dict.get(name_wall, 0.0)
-            R_item = QTableWidgetItem()
-            R_item.setData(0, f'{R}')
-            self.CalculateTableWidget.setItem(row, col + 4, R_item)
-            self.CalculateTableWidget.item(
-                row, col + 4).setText(f'{R}')
+            R = wall_dict.get(name_wall)
+            if R:
+                k = 1/float(R)
+                k = float('{:.3f}'.format(k))
+                k_item = QTableWidgetItem()
+                k_item.setData(0, f'{k}')
+                self.CalculateTableWidget.setItem(row, col + 4, k_item)
 
     def valid_walls(self):
         current_table = []
@@ -410,6 +407,7 @@ class CalculateTable:
             temp2 = float(self.CalculateTableWidget.item(row, 3).text())
             area = float(self.CalculateTableWidget.item(row, 7).text())
             k = float(self.CalculateTableWidget.item(row, 8).text())
+
             if abs(temp1 - temp2) <= 3:
                 result = 'Нет потерь'
             else:
