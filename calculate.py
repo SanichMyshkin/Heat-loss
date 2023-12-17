@@ -87,6 +87,13 @@ class CalculateTable:
 
             if room_name_item and coefficient_item:
                 room_name = room_name_item.text()
+                if room_name == '':
+                    message_box = QMessageBox()
+                    message_box.critical(
+                        None, "Ошибка!", f"У помещения № {count_name + 1} не заполнено название")  # noqa E501
+                    message_box.setFixedSize(500, 200)
+                    count_name = 0
+                    return
 
                 if room_name in existing_rooms:
                     message_box = QMessageBox()
